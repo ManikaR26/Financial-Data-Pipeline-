@@ -1,4 +1,4 @@
-Real-Time Financial Data Processing Pipeline
+Real-Time Event Data Processing Pipeline
 
 This project implements a real-time data processing system designed to ingest, transform, store, and visualize financial market data. It leverages Apache Kafka for streaming, Apache Spark for real-time processing, MySQL for storage, and Grafana for monitoring and visualization. The entire pipeline is containerized using Docker to ensure scalability and easy deployment.
 
