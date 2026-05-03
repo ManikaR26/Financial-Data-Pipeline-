@@ -1,97 +1,65 @@
-# Real-time Financial Data Processing Pipeline
+Real-Time Financial Data Processing Pipeline
 
-This project demonstrates a real-time financial data processing pipeline using Apache Kafka, Apache Spark, MySQL, and Grafana, all orchestrated with Docker. The pipeline fetches stock data from the Financial Modeling Prep API, processes it using Spark, stores the processed data in MySQL, and visualises it using Grafana.
+This project implements a real-time data processing system designed to ingest, transform, store, and visualize financial market data. It leverages Apache Kafka for streaming, Apache Spark for real-time processing, MySQL for storage, and Grafana for monitoring and visualization. The entire pipeline is containerized using Docker to ensure scalability and easy deployment.
 
-## Project Objectives
+Project Objectives
+Build a real-time data ingestion pipeline using Apache Kafka
+Perform streaming data processing using Apache Spark
+Store processed data efficiently in a MySQL database
+Create interactive dashboards for data visualization using Grafana
+Containerize and orchestrate all services using Docker
+System Architecture
 
-- Set up a real-time data ingestion system using Apache Kafka
-- Process streaming data in real-time using Apache Spark
-- Store processed data in a MySQL database
-- Visualise the processed data using Grafana
-- Orchestrate the entire pipeline using Docker
+The pipeline is composed of the following components:
 
-## Project Architecture
+Data Producer: A Python-based service that retrieves live stock market data from an external API and streams it to Kafka topics
+Apache Kafka: Acts as the messaging layer, handling real-time data ingestion and buffering
+Apache Spark: Consumes streaming data from Kafka, performs transformations, and prepares it for storage
+MySQL Database: Stores the processed and structured financial data
+Grafana Dashboard: Provides real-time insights through interactive visualizations and monitoring panels
 
-The project consists of the following components:
+Dependencies for the producer and processing modules are managed via requirements.txt and installed within their respective Docker containers.
 
-- Kafka Producer: A Python script that fetches real-time stock data from the Financial Modeling Prep API and publishes it to a Kafka topic.
-- Kafka: A distributed streaming platform that ingests real-time data from the Kafka Producer and makes it available for processing.
-- Spark: A distributed computing system that consumes data from Kafka, processes it in real-time, and stores the processed data in a MySQL database.
-- MySQL: A relational database management system used to store the processed stock data.
-- Grafana: An open-source platform for data visualization and monitoring, used to create dashboards and visualise the processed stock data.
+Prerequisites
+Python (v3.12 or later)
+Docker and Docker Compose installed
+API key from Financial Modeling Prep
+Setup Instructions
+Clone the repository:
+git clone https://github.com/hawa1222/real-time-data-processing.git
+Navigate to the project directory:
+cd real-time-data-processing
+Configure the environment:
+Make the setup script executable:
+chmod +x setup_environment.sh
+Run the setup script:
+./setup_environment.sh
+Create a .env file in the root directory and add the required environment variables as specified in .env_template.
+Running the Application
 
-The project uses `requirements.txt` files to manage the Python dependencies for the Kafka producer and Spark processing scripts. The dependencies are installed within the respective Docker containers during the build process.
+Start all services using Docker:
 
+docker-compose up --build
 
-## Prerequisites
+This will initialize and run all components including Kafka, Spark, MySQL, and Grafana.
 
-- Python (version 3.12)
-- Docker: Install Docker and Docker Compose on your machine.
-- Financial Modeling Prep API Key: Sign up for a free API key at [Financial Modeling Prep](https://site.financialmodelingprep.com/).
+Alternatively, individual services can be executed manually by activating the virtual environment and running:
 
-## Setup Instructions
+Kafka Producer:
+python kafka/kafka_producer.py
+Spark Processor:
+python spark/process_data.py
+Accessing the Dashboard
 
-1. Clone the project repository:
-   ```
-   git clone https://github.com/hawa1222/real-time-data-processing.git
-   ```
+Open your browser and navigate to:
 
-2. Navigate to the project directory:
-   ```
-   cd real-time-data-processing
-   ```
+http://localhost:3000
+Log in using the credentials defined in the .env file
+The MySQL data source is pre-configured
+A default dashboard for stock data visualization is automatically loaded
+Customization
+Modify the .env file to update database configurations
+Edit stock_data_dashboard.json to customize Grafana dashboards
+License
 
-3. Set up your environment:
-
-   Make the setup script executable (if it's not already):
-
-   ```
-   chmod +x setup_environment.sh
-   ```
-
-   Then run the `setup_environment.sh` script to create a virtual environment and install all necessary packages. Execute this script from the root directory of the project:
-
-   ```
-   ./setup_environment.sh
-   ```
-
-4. Create a `.env` file in the project root directory and provide the environment variables as specified in `.env_template`.
-
-## Usage
-
-
-1. Build and run the Docker containers:
-   ```
-   docker-compose up --build
-   ```
-
-   - This command will build the Docker images and start the containers for each service (Kafka, Spark, MySQL, and Grafana).
-
-   If you wish to run the Spark and Kafka Python scripts individually without using Docker, activate the virtual environment created by setup_environment.sh, run zookeeper & kafka locally, and run the scripts from the command line.
-
-   - For Kafka:
-     ```
-     python kafka/kafka_producer.py
-     ```
-
-   - For Spark:
-     ```
-     python spark/process_data.py
-     ```
-
-2. Access the Grafana dashboard:
-
-   Open your web browser and visit [http://localhost:3000](http://localhost:3000/). Log in using the admin credentials you provided in the `.env` file.
-
-   - The MySQL data source should be automatically configured based on the `datasource.yml` file.
-   - The default dashboard for visualising stock data should be imported automatically based on the `stock_data_dashboard.json` file.
-
-
-## Additional Configuration
-
-- Update the `.env` file root directory to change the MySQL connection details if required.
-- Customise the `stock_data_dashboard.json` file in the `grafana/` directory to modify the default Grafana dashboard.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
+This project is distributed under the MIT License. Refer to the LICENSE file for more details.
